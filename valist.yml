@@ -1,0 +1,4 @@
+account: nasdf
+project: example-next-app
+release: v0.0.1
+path: ./out

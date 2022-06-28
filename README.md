@@ -1,34 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NextJS App Example
 
-## Getting Started
+This example demonstrates how to publish your NextJS App on Valist.
 
-First, run the development server:
+[Click here to view this project on Valist.](https://mumbai.valist.io/nasdf/example-next-app)
 
-```bash
-npm run dev
-# or
-yarn dev
+> *IMPORTANT* You must build a static version of your site. Use `next build && next export` to build a static version.
+
+## Publish with the Valist GitHub Action
+
+See the [GitHub Action Quick Start](https://docs.valist.io/github-action/github-action-quick-start) for more info.
+
+```yaml
+on:
+  release:
+    types: [published]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - uses: actions/checkout@v2
+      - run: |
+          npm install
+          npm run build
+      - uses: valist-io/valist-github-action@dev
+        with:
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          account: <your-account-name-here>
+          project: <your-project-name-here>
+          release: ${{ github.ref_name }}
+          path: './out'
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Publish with the Valist CLI
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+See the [CLI Quick Start](https://docs.valist.io/cli/cli-quick-start) for more info.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Simple
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Run the following from your project root.
 
-## Learn More
+```bash
+$ npm run build
+$ valist publish <your-account-name-here>/<your-project-name-here>/<your-release-name-here> ./out
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Advanced
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `valist.yml` file in your project root.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```yaml
+account: <your-account-name-here>
+project: <your-project-name-here>
+release: <your-release-name-here>
+path: ./out
+```
 
-## Deploy on Vercel
+Run the following from your project root.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+$ npm run build
+$ valist publish
+```
