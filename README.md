@@ -4,7 +4,25 @@ This example demonstrates how to publish your NextJS App on Valist.
 
 [Click here to view this project on Valist.](https://mumbai.valist.io/nasdf/example-next-app)
 
-> *IMPORTANT* You must build a static version of your site. Use `next build && next export` to build a static version.
+## Setup
+
+Edit your `package.json` to build a static version of your site.
+
+```json
+{
+  "scripts": {
+    "build": "next build && next export"
+  }
+}
+```
+
+Edit your `next.config.js` to use relative asset paths.
+
+```javascript
+const nextConfig = {
+  assetPrefix: './',
+}
+```
 
 ## Publish with the Valist GitHub Action
 
